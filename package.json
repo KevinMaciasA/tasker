@@ -1,0 +1,21 @@
+{
+  "name": "tasker",
+  "version": "1.0.0",
+  "description": "CLI App to handle due task",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "tasker": "file:"
+  }
+}
