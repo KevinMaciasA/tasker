@@ -62,31 +62,47 @@ class Taskler {
   }
 
   update(id: number, update: string): void {
-    const index = id - 1
-    const task = this.get(index)
+    const task = this.get(id)
     if (task) {
-      this.set(index, update)
+      this.set(id, update)
     } else {
       console.log(`Task with id ${id} doesn't exist`)
     }
   }
 
+  mark(id: number) {
+    const task = this.get(id)
+    if (!task) return
+
+    this.update(id, strike(task))
+  }
+
+  unmark(id: number) {
+    const task = this.get(id)
+    if (!task) return
+
+    this.update(id, unStrike(task))
+  }
+
   delete(id: number) {
-    const index = id - 1
-    this.state.tasks = this.state.tasks.filter((_, i) => index != i)
+    this.state.tasks = this.state.tasks.filter((_, i) => this.index(id) != i)
     this.write()
+  }
+
+  index(id: number): number {
+    return id - 1
   }
 
   size(): number {
     return this.state.tasks.length
   }
 
-  private get(index: number): string | undefined {
-    return this.state.tasks.at(index)
+  private get(id: number): string | undefined {
+    return this.state.tasks.at(this.index(id))
   }
 
-  private set(index: number, value: string) {
-    this.state.tasks[index] = value
+  private set(id: number, value: string) {
+    this.state.tasks[this.index(id)] = value
     this.write()
   }
 
@@ -101,3 +117,12 @@ ${body}`
 }
 
 export default Taskler
+
+function strike(text: string): string {
+  return `\x1b[9m${text}\x1b[0m`
+}
+
+function unStrike(text: string): string {
+  const strikeRegex = /\x1b\[9m|\x1b\[0m/g;
+  return text.replace(strikeRegex, "")
+}

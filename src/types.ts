@@ -8,5 +8,9 @@ export enum Command {
   DELETE = "delete",
   REMOVE = "remove",
   UPDATE = "update",
+  FINISH = "finish",
+  DONE = "done",
+  UNFINISH = "unfinish",
+  UNDONE = "undone",
   HELP = 'help'
 }

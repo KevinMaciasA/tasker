@@ -5,10 +5,10 @@ const tasker = new Taskler();
 
 const [node, path, ...args] = process.argv
 
-if (args) {
-  const [cmd, ...rest] = args
-  const command = cmd.toLowerCase()
-  const params = rest.map(item => item.toLowerCase())
+if (args.length) {
+  const [cmd, ...rest] = args.map(item => item.toLowerCase())
+  const command = cmd
+  const params = rest
 
   switch (command) {
     case Command.ADD:
@@ -26,6 +26,16 @@ if (args) {
     case Command.REMOVE:
     case Command.DELETE:
       remove(params);
+      break;
+
+    case Command.DONE:
+    case Command.FINISH:
+      finish(params)
+      break;
+
+    case Command.UNDONE:
+    case Command.UNFINISH:
+      unfinish(params)
       break;
 
     case Command.HELP:
@@ -62,11 +72,31 @@ function update(args: string[]) {
 }
 
 function remove(args: string[]) {
-  const id = args.map(a => parseInt(a)).find(a => !isNaN(a))
+  const id = getId(args)
 
   if (!id) return console.error("Task id should be an integer")
 
   tasker.delete(id)
+}
+
+function finish(args: string[]) {
+  const id = getId(args)
+
+  if (!id) return console.error("Task id should be an integer")
+
+  tasker.mark(id)
+}
+
+function unfinish(args: string[]) {
+  const id = getId(args)
+
+  if (!id) return console.error("Task id should be an integer")
+
+  tasker.unmark(id)
+}
+
+function getId(args: string[]): number | undefined {
+  return args.map(a => parseInt(a)).find(a => !isNaN(a))
 }
 
 function help() {
