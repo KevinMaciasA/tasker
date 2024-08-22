@@ -28,11 +28,11 @@ class Taskler {
   }
 
   private createJson(): void {
-    this.write(this.state)
+    this.write()
   }
 
-  private write(tasks: Tasks): void {
-    const json = JSON.stringify(tasks)
+  private write(): void {
+    const json = JSON.stringify(this.state)
     fs.writeFileSync(this.options.path, json, {
       encoding: 'utf8',
       flag: 'w'
@@ -53,6 +53,7 @@ class Taskler {
 
   add(task: string): void {
     this.state.tasks.push(task)
+    this.write()
   }
 
   list() {
@@ -73,6 +74,7 @@ class Taskler {
   delete(id: number) {
     const index = id - 1
     this.state.tasks = this.state.tasks.filter((_, i) => index != i)
+    this.write()
   }
 
   size(): number {
@@ -85,6 +87,7 @@ class Taskler {
 
   private set(index: number, value: string) {
     this.state.tasks[index] = value
+    this.write()
   }
 
   toString() {
@@ -94,6 +97,7 @@ class Taskler {
     return `${header}
 ${body}`
   }
+
 }
 
 export default Taskler
