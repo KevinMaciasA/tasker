@@ -9,7 +9,6 @@ if (args) {
   const [cmd, ...rest] = args
   const command = cmd.toLowerCase()
   const params = rest.map(item => item.toLowerCase())
-  console.log({ command, params })
 
   switch (command) {
     case Command.ADD:
@@ -24,6 +23,7 @@ if (args) {
       update(params)
       break;
 
+    case Command.REMOVE:
     case Command.DELETE:
       remove(params);
       break;
@@ -33,7 +33,7 @@ if (args) {
       break;
 
     default:
-      console.error(`'${command}' doesn't exist. Type help if you are lost.`)
+      console.error(`Command '${command}' doesn't exist. Type help if you are lost.`)
       break;
   }
 } else {
@@ -57,7 +57,7 @@ function update(args: string[]) {
   const [update, maybeId, ...ignore] = args
   const id = parseInt(maybeId)
 
-  if (isNaN(id)) return console.error("Task id should be an integer")
+  if (isNaN(id)) return console.error(errorMessage + "\n" + "- 'task id' has to be an integer")
   tasker.update(id, update)
 }
 
